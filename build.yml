@@ -1,0 +1,22 @@
+name: Build
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: unzip CosmicWarden.zip
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - run: chmod +x gradlew && ./gradlew build --no-daemon
+        working-directory: CosmicWarden
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CosmicWarden
+          path: CosmicWarden/build/libs/*.jar
